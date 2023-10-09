@@ -1,6 +1,7 @@
 package vn.example.firebaseapp.realtime
 
 data class UserInfo(
+    var key: String? = null,
     var id: String? = null,
     var content: String? = null
 )

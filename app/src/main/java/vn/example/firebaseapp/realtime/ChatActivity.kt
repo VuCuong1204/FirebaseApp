@@ -51,7 +51,7 @@ class ChatActivity : AppCompatActivity() {
                     }
                 }
 
-                chatAdapter.notifyDataSetChanged()
+                chatAdapter.submitList(dataList)
                 if (dataList.lastIndex > 0) {
                     rvRoot.smoothScrollToPosition(dataList.lastIndex)
                 }
@@ -68,7 +68,8 @@ class ChatActivity : AppCompatActivity() {
         ivSend.setOnClickListener {
             val content = edtContent.text.toString().trim()
             edtContent.setText("")
-            sendData(UserInfo(AppConfig.userId, content))
+            val key = "${AppConfig.userId}${dataList.size + 1}"
+            sendData(UserInfo(key, AppConfig.userId, content))
         }
     }
 
@@ -82,7 +83,6 @@ class ChatActivity : AppCompatActivity() {
 
     private fun sendData(userInfo: UserInfo) {
         val userId = myRef.push().key
-
         if (userId != null) {
             // Đặt giá trị đối tượng người dùng vào Firebase Realtime Database
             myRef.child(userId).setValue(userInfo)

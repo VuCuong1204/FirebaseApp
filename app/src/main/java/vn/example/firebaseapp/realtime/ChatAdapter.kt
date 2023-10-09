@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import vn.example.firebaseapp.R
 
@@ -46,7 +47,7 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount(): Int = dataList.size
 
-    inner class ChatSendVH(private val view: View) : RecyclerView.ViewHolder(view) {
+    inner class ChatSendVH(view: View) : RecyclerView.ViewHolder(view) {
 
         private var tvContent: TextView = view.findViewById(R.id.tvHomeChatSenderContent)
 
@@ -55,7 +56,7 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    inner class ChatReceiverVH(private val view: View) : RecyclerView.ViewHolder(view) {
+    inner class ChatReceiverVH(view: View) : RecyclerView.ViewHolder(view) {
 
         private var tvTitle: TextView = view.findViewById(R.id.tvChatReceiverTitle)
         private var tvContent: TextView = view.findViewById(R.id.tvHomeChatReceiverContent)
@@ -64,5 +65,11 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             tvTitle.text = data.id
             tvContent.text = data.content
         }
+    }
+
+    fun submitList(newList: List<UserInfo>) {
+        val diffCallback = ChatDiffUtilCallBack(dataList, newList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        diffResult.dispatchUpdatesTo(this)
     }
 }

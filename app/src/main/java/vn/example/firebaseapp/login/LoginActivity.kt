@@ -29,8 +29,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var googleLogin: GoogleLogin
     private lateinit var facebookLogin: FacebookLogin
     private lateinit var instagramLogin: InstagramLogin
-
-    private val urlTwitter = "twitter.com"
+    private lateinit var twitterLogin: TwitterLogin
 
     private val TAG = LoginActivity::class.java.simpleName
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnTwitter.setOnClickListener {
-            loginTwitter()
+            twitterLogin.login()
         }
 
         btnInstagram.setOnClickListener {
@@ -97,6 +96,13 @@ class LoginActivity : AppCompatActivity() {
                 Log.d(TAG, "onResponse:  $id $username}")
             }
         })
+
+        twitterLogin = TwitterLogin(this, object : ILoginState {
+            override fun onSuccess(token: String) {
+                Toast.makeText(this@LoginActivity, "login success $token", Toast.LENGTH_SHORT).show()
+                Log.d(TAG, "login success: $token")
+            }
+        })
     }
 
     private fun loginGoogle() {
@@ -105,30 +111,6 @@ class LoginActivity : AppCompatActivity() {
 
     private fun loginFacebook() {
         facebookLogin.login()
-    }
-
-    private fun loginTwitter() {
-        val provider = OAuthProvider.newBuilder(urlTwitter)
-        provider.addCustomParameter("lang", "fr")
-
-        val pendingResultTask = auth.pendingAuthResult
-        if (pendingResultTask != null) {
-            // There's something already here! Finish the sign-in for your user.
-            pendingResultTask.addOnSuccessListener {
-                Toast.makeText(this, "login success ${it.user?.getIdToken(false)?.result?.token}", Toast.LENGTH_SHORT).show()
-                Log.d(TAG, "login success: ${it.user?.getIdToken(false)?.result?.token}")
-            }.addOnFailureListener {
-                Toast.makeText(this, "failed", Toast.LENGTH_SHORT).show()
-            }
-        } else {
-            auth.startActivityForSignInWithProvider(this, provider.build())
-                .addOnSuccessListener {
-                    Toast.makeText(this, "login success ${it.user?.getIdToken(false)?.result?.token}", Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener {
-                    Toast.makeText(this, "failed", Toast.LENGTH_SHORT).show()
-                }
-        }
     }
 
     private fun loginInstagram() {
