@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">FirebaseApp</string>
+
+    <string name="google_client_id">574047223826-ltihgmou5toq0s5jkr5lm91lg6bg9ud9.apps.googleusercontent.com</string>
+
+    <string name="facebook_app_id">281233531531008</string>
+    <string name="fb_login_protocol_scheme">fb281233531531008</string>
+    <string name="facebook_client_token">14bd9bb86d4d2a8984f386219bb8fdc2</string>
+
+    <string name="client_id">1969202373451157</string>
+    <string name="redirect_uri">redirectUri</string>
+
+    <string name="default_notification_channel_id">12042001</string>
+
+    <string name="url_twitter">twitter.com</string>
+
+</resources>
